@@ -1,0 +1,8 @@
+site_name: Keap Connect
+
+theme:
+    # name: mkdocs
+    name: readthedocs
+# extra_css: [extra.css]
+# extra_javascript: [extra.js]
+
