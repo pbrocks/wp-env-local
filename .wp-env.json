@@ -2,13 +2,26 @@
 	"plugins": [
 		"."
 	],
+	"themes": [
+		"WordPress/twentytwentyfour"
+	],
 	"config": {
 		"WP_DEBUG": true,
 		"WP_DEBUG_LOG": true
 	},
+	"port": 7777,
+	"env": {
+		"tests": {
+			"port": 7778
+		}
+	},
 	"mappings": {
 		"wp-content/plugins": "./wp-content/plugins",
 		"wp-content/themes": "./wp-content/themes",
+		"wp-content/info-passed": "./local/info-to-pass",
 		"/docker-entrypoint-initdb.d": "./docker/mysql"
+	},
+	"lifecycleScripts": {
+		"afterStart": "./save-wp-env-path.sh"
 	}
 }
