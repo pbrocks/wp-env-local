@@ -26,12 +26,12 @@ add_action( 'admin_menu', 'tag_add_admin_menu' );
 // Function to add admin menu item
 function tag_add_admin_menu() {
 	add_menu_page(
-		'TAG Debug Info',
-		'TAG Debug Info',
+		__( 'TAG Debug Info', 'the-api-guys' ),
+		__( 'TAG Debug Info', 'the-api-guys' ),
 		'manage_options',
-		'view-debug-log',
-		'view_debug_log_admin_page',
-		'dashicons-admin-tools',
+		'the-api-guys',
+		'tag_debug_info_admin_page',
+		'dashicons-rest-api',
 		3
 	);
 }
@@ -40,16 +40,16 @@ function tag_add_admin_menu() {
  *
  * @return void
  */
-function view_debug_log_admin_page() {
+function tag_debug_info_admin_page() {
 	echo '<style>pre {white-space:pre-wrap;padding:1rem;border:3px solid white;background:aliceblue;}li{margin-left:2rem;}</style>';
 	?>
 <div class="wrap">
     <h1>tag Debug Info</h1>
     <h2 class="nav-tab-wrapper">
-        <a href="?page=view-debug-log&tab=debug-log"
+        <a href="?page=the-api-guys&tab=debug-log"
             class="nav-tab <?php echo isset( $_GET['tab'] ) && $_GET['tab'] == 'debug-log' ? 'nav-tab-active' : ''; ?>">Debug
             Log</a>
-        <a href="?page=view-debug-log&tab=installation"
+        <a href="?page=the-api-guys&tab=installation"
             class="nav-tab <?php echo isset( $_GET['tab'] ) && $_GET['tab'] == 'installation' ? 'nav-tab-active' : ''; ?>">Installation
             Info</a>
     </h2>
