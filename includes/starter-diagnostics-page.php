@@ -16,23 +16,17 @@ add_action( 'admin_menu', 'starter_diagnostics' );
 function starter_diagnostics() {
     $slug  = preg_replace( '/_+/', '-', __FUNCTION__ );
     $label = ucwords( preg_replace( '/_+/', ' ', __FUNCTION__ ) );
-    // add_dashboard_page(
-    //     __( $label, 'starter-diagnostics' ),
-    //     __( $label, 'starter-diagnostics' ),
-    //     'manage_options', $slug . '.php',
-    //     'starter_diagnostics_page' 
-    // );
 
     add_menu_page(
         // __( 'Starter Page', 'starter-settings' ), // Localized title for the page.
         // __( 'Starter Options', 'starter-settings' ), // Localized title for the menu.
         __( $label, 'starter-diagnostics' ),
         __( $label, 'starter-diagnostics' ),
-        'manage_options', // Capability required to access the page.
-        'starter-diagnostics', // Unique slug for the page.
-        'starter_diagnostics_page', // Callback function to display the content.
-        'dashicons-palmtree', // Icon for the menu.
-        3 // Position in the menu.
+        'manage_options',
+        'starter-page',
+        'starter_options_page_html',
+        'dashicons-palmtree',
+        3
     );
 }
 

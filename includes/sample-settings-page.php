@@ -13,13 +13,13 @@ add_action( 'admin_menu', 'starter_options_page' );
  */
 function starter_options_page() {
     add_menu_page(
-        __( 'Starter Page', 'starter-settings' ), // Localized title for the page.
-        __( 'Starter Options', 'starter-settings' ), // Localized title for the menu.
-        'manage_options', // Capability required to access the page.
-        'starter-page', // Unique slug for the page.
-        'starter_options_page_html', // Callback function to display the content.
-        'dashicons-palmtree', // Icon for the menu.
-        3 // Position in the menu.
+        __( 'Starter Page', 'starter-settings' ),
+        __( 'Starter Options', 'starter-settings' ),
+        'manage_options',
+        'starter-page',
+        'starter_options_page_html',
+        'dashicons-palmtree',
+        3
     );
 }
 
