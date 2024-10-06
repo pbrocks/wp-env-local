@@ -1,14 +1,26 @@
 {
-	"plugins": [
-		"."
-	],
-	"config": {
-		"WP_DEBUG": true,
-		"WP_DEBUG_LOG": true
-	},
-	"mappings": {
-		"wp-content/plugins": "./wp-content/plugins",
-		"wp-content/themes": "./wp-content/themes",
-		"/docker-entrypoint-initdb.d": "./docker/mysql"
-	}
+    "plugins": [
+        "."
+    ],
+    "themes": [
+        "WordPress/twentytwentyfour"
+    ],
+    "port": 5544,
+    "env": {
+        "tests": {
+            "port": 5444
+        }
+    },
+    "config": {
+        "WP_DEBUG": true,
+        "WP_DEBUG_LOG": true,
+        "WP_DEBUG_DISPLAY": true,
+        "WP_PERMALINK_STRUCTURE": "/%postname%/"
+    },
+    "mappings": {
+        "wp-content/plugins": "./local/plugins",
+        "wp-content/themes": "./local/themes",
+        "wp-content/info-passed": "./local/info-to-pass",
+        "/docker-entrypoint-initdb.d": "./docker/mysql"
+    }
 }

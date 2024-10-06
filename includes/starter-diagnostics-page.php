@@ -29,8 +29,8 @@ function starter_diagnostics() {
         __( $label, 'starter-diagnostics' ),
         __( $label, 'starter-diagnostics' ),
         'manage_options', // Capability required to access the page.
-        'starter-page', // Unique slug for the page.
-        'starter_options_page_html', // Callback function to display the content.
+        'starter-diagnostics', // Unique slug for the page.
+        'starter_diagnostics_page', // Callback function to display the content.
         'dashicons-palmtree', // Icon for the menu.
         3 // Position in the menu.
     );
