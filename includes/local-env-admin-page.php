@@ -1,5 +1,9 @@
 <?php
 
+// Hook to add admin menu item
+add_action( 'admin_menu', 'tag_add_admin_menu' );
+add_action('admin_enqueue_scripts', 'tag_env_enqueue_admin_styles');
+
 if ( ! function_exists( 'write_to_log' ) ) {
 	function write_to_log( $log ) {
 		if ( is_array( $log ) || is_object( $log ) ) {
@@ -10,16 +14,13 @@ if ( ! function_exists( 'write_to_log' ) ) {
 	}
 }
 
-// Hook to add admin menu item
-add_action( 'admin_menu', 'tag_add_admin_menu' );
-
 // Function to add admin menu item
 function tag_add_admin_menu() {
 	add_menu_page(
 		esc_html__( 'TAG Debug Info', 'tag-plugin' ),  // Localize
 		esc_html__( 'TAG Debug Info', 'tag-plugin' ),  // Localize
 		'manage_options',
-		'tag-debug-info',
+		'the-api-guys',
 		'tag_debug_info_admin_page',
 		'dashicons-rest-api',
 		3
@@ -35,15 +36,19 @@ function tag_debug_info_admin_page() {
 	echo '<style>pre {white-space:pre-wrap;padding:1rem;border:3px solid white;background:aliceblue;}li{margin-left:2rem;}</style>';
 	?>
 <div class="wrap">
-    <h1><?php esc_html_e( 'TAG Debug Info', 'tag-plugin' ); ?></h1> <!-- Localize -->
+    <h1 class="logo"><?php esc_html_e('Debug Info', 'keap-connect-wp'); ?></h1>
     <h2 class="nav-tab-wrapper">
-        <a href="<?php echo esc_url( add_query_arg( 'tab', 'debug-log', admin_url( 'admin.php?page=tag-debug-info' ) ) ); ?>"
-            class="nav-tab <?php echo isset( $_GET['tab'] ) && sanitize_text_field( $_GET['tab'] ) == 'debug-log' ? 'nav-tab-active' : ''; ?>">
+        <a href="<?php echo esc_url( add_query_arg( 'tab', 'debug-log', admin_url( 'admin.php?page=the-api-guys' ) ) ); ?>"
+            class="nav-tab <?php echo isset( $_GET['tab'] ) && sanitize_text_field( $_GET['tab'] ) === 'debug-log' ? 'nav-tab-active' : ''; ?>">
             <?php esc_html_e( 'Debug Log', 'tag-plugin' ); ?>
         </a>
-        <a href="<?php echo esc_url( add_query_arg( 'tab', 'installation', admin_url( 'admin.php?page=tag-debug-info' ) ) ); ?>"
-            class="nav-tab <?php echo isset( $_GET['tab'] ) && sanitize_text_field( $_GET['tab'] ) == 'installation' ? 'nav-tab-active' : ''; ?>">
+        <a href="<?php echo esc_url( add_query_arg( 'tab', 'installation', admin_url( 'admin.php?page=the-api-guys' ) ) ); ?>"
+            class="nav-tab <?php echo isset( $_GET['tab'] ) && sanitize_text_field( $_GET['tab'] ) === 'installation' ? 'nav-tab-active' : ''; ?>">
             <?php esc_html_e( 'Installation Info', 'tag-plugin' ); ?>
+        </a>
+        <a href="<?php echo esc_url( add_query_arg( 'tab', 'images', admin_url( 'admin.php?page=the-api-guys' ) ) ); ?>"
+            class="nav-tab <?php echo isset( $_GET['tab'] ) && sanitize_text_field( $_GET['tab'] ) === 'images' ? 'nav-tab-active' : ''; ?>">
+            <?php esc_html_e( 'Image URLs', 'tag-plugin' ); ?>
         </a>
     </h2>
     <div>
@@ -56,12 +61,34 @@ function tag_debug_info_admin_page() {
 				case 'installation':
 					tag_display_installation_info();
 					break;
+				case 'images':
+					tag_options_tab_html();
+					break;
 			}
 			?>
     </div>
 </div>
 <?php
 }
+function tag_env_enqueue_admin_styles($hook) {
+    // Replace 'tag_env_page' with the actual slug of your plugin's admin page
+    $plugin_page = 'toplevel_page_tag_env_page'; 
+
+    // Check if we're on the plugin's admin page
+    if ($hook !== $plugin_page) {
+        return;
+    }
+
+    // Enqueue your CSS file
+    wp_enqueue_style(
+        'my-plugin-admin-style', // Handle for the style
+        plugin_dir_url(__FILE__) . 'assets/css/admin-style.css', // Path to your CSS file
+        array(), // Dependencies, if any
+        '1.0.0', // Version
+        'all' // Media
+    );
+}
+
 
 /**
  * Show debug log function
