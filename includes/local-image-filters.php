@@ -4,7 +4,6 @@ defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
 $options = get_option( 'tag_options' );
 if ( is_array( $options ) && isset( $options['production_domain'] ) ) {
-	// Access the array value
 	$production_domain = esc_attr( $options['production_domain'] );
 
 	if ( isset( $production_domain ) ) {
