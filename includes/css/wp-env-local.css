@@ -1,0 +1,22 @@
+/* keap-connect-wp.css */
+h1.logo::before {
+    content: "";
+    content: "The API Guys ";
+    content: url("../../assets/apiguys_robotlogo_admin.png");
+}
+
+h1.logo {
+    display: flex;
+    align-items: center;
+}
+
+pre {
+    white-space: pre-wrap;
+    padding: 1rem;
+    border: 3px solid white;
+    background: aliceblue;
+}
+
+li {
+    margin-left: 2rem;
+}

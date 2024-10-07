@@ -1,8 +1,8 @@
 <?php
 
 // Hook to add admin menu item
-add_action( 'admin_menu', 'tag_add_admin_menu' );
-add_action('admin_enqueue_scripts', 'tag_env_enqueue_admin_styles');
+add_action( 'admin_menu', 'tag_add_admin_menu', 9 );
+add_action( 'admin_enqueue_scripts', 'tag_env_enqueue_admin_styles' );
 
 if ( ! function_exists( 'write_to_log' ) ) {
 	function write_to_log( $log ) {
@@ -14,11 +14,15 @@ if ( ! function_exists( 'write_to_log' ) ) {
 	}
 }
 
-// Function to add admin menu item
+/**
+ * Add admin menu item function
+ *
+ * @return void
+ */
 function tag_add_admin_menu() {
 	add_menu_page(
-		esc_html__( 'TAG Debug Info', 'tag-plugin' ),  // Localize
-		esc_html__( 'TAG Debug Info', 'tag-plugin' ),  // Localize
+		esc_html__( 'TAG Debug Info', 'tag-plugin' ),
+		esc_html__( 'The API Guys', 'tag-plugin' ),
 		'manage_options',
 		'the-api-guys',
 		'tag_debug_info_admin_page',
@@ -33,60 +37,74 @@ function tag_add_admin_menu() {
  * @return void
  */
 function tag_debug_info_admin_page() {
-	echo '<style>pre {white-space:pre-wrap;padding:1rem;border:3px solid white;background:aliceblue;}li{margin-left:2rem;}</style>';
+	echo '<style></style>';
 	?>
 <div class="wrap">
-    <h1 class="logo"><?php esc_html_e('Debug Info', 'keap-connect-wp'); ?></h1>
-    <h2 class="nav-tab-wrapper">
-        <a href="<?php echo esc_url( add_query_arg( 'tab', 'debug-log', admin_url( 'admin.php?page=the-api-guys' ) ) ); ?>"
-            class="nav-tab <?php echo isset( $_GET['tab'] ) && sanitize_text_field( $_GET['tab'] ) === 'debug-log' ? 'nav-tab-active' : ''; ?>">
-            <?php esc_html_e( 'Debug Log', 'tag-plugin' ); ?>
-        </a>
-        <a href="<?php echo esc_url( add_query_arg( 'tab', 'installation', admin_url( 'admin.php?page=the-api-guys' ) ) ); ?>"
-            class="nav-tab <?php echo isset( $_GET['tab'] ) && sanitize_text_field( $_GET['tab'] ) === 'installation' ? 'nav-tab-active' : ''; ?>">
-            <?php esc_html_e( 'Installation Info', 'tag-plugin' ); ?>
-        </a>
-        <a href="<?php echo esc_url( add_query_arg( 'tab', 'images', admin_url( 'admin.php?page=the-api-guys' ) ) ); ?>"
-            class="nav-tab <?php echo isset( $_GET['tab'] ) && sanitize_text_field( $_GET['tab'] ) === 'images' ? 'nav-tab-active' : ''; ?>">
-            <?php esc_html_e( 'Image URLs', 'tag-plugin' ); ?>
-        </a>
-    </h2>
-    <div>
-        <?php
+	<h1 class="logo"><?php esc_html_e( 'Developer\'s Companion', 'keap-connect-wp' ); ?></h1>
+	<?php
+
+	// Get the current options.
+	$options = get_option( 'tag_options' );
+
+	if ( $options ) :
+		$home_url = home_url();
+		?>
+	<h3 style="color: maroon;">Developer's Companion Active</h3>
+
+		<?php
+	endif;
+
+	?>
+	<h2 class="nav-tab-wrapper">
+		<a href="<?php echo esc_url( add_query_arg( 'tab', 'debug-log', admin_url( 'admin.php?page=the-api-guys' ) ) ); ?>"
+			class="nav-tab <?php echo isset( $_GET['tab'] ) && sanitize_text_field( $_GET['tab'] ) === 'debug-log' ? 'nav-tab-active' : ''; ?>">
+			<?php esc_html_e( 'Debug Log', 'tag-plugin' ); ?>
+		</a>
+		<a href="<?php echo esc_url( add_query_arg( 'tab', 'installation', admin_url( 'admin.php?page=the-api-guys' ) ) ); ?>"
+			class="nav-tab <?php echo isset( $_GET['tab'] ) && sanitize_text_field( $_GET['tab'] ) === 'installation' ? 'nav-tab-active' : ''; ?>">
+			<?php esc_html_e( 'Installation Info', 'tag-plugin' ); ?>
+		</a>
+		<a href="<?php echo esc_url( add_query_arg( 'tab', 'images', admin_url( 'admin.php?page=the-api-guys' ) ) ); ?>"
+			class="nav-tab <?php echo isset( $_GET['tab'] ) && sanitize_text_field( $_GET['tab'] ) === 'images' ? 'nav-tab-active' : ''; ?>">
+			<?php esc_html_e( 'Image URLs', 'tag-plugin' ); ?>
+		</a>
+	</h2>
+	<div>
+		<?php
 			$tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'debug-log';  // Sanitize input
-			switch ( $tab ) {
-				case 'debug-log':
-					tag_show_debug_log();
-					break;
-				case 'installation':
-					tag_display_installation_info();
-					break;
-				case 'images':
-					tag_options_tab_html();
-					break;
-			}
-			?>
-    </div>
+		switch ( $tab ) {
+			case 'debug-log':
+				tag_show_debug_log();
+				break;
+			case 'installation':
+				tag_display_installation_info();
+				break;
+			case 'images':
+				tag_options_tab_html();
+				break;
+		}
+		?>
+	</div>
 </div>
-<?php
+	<?php
 }
-function tag_env_enqueue_admin_styles($hook) {
-    // Replace 'tag_env_page' with the actual slug of your plugin's admin page
-    $plugin_page = 'toplevel_page_tag_env_page'; 
+function tag_env_enqueue_admin_styles( $hook ) {
+	// Replace 'tag_env_page' with the actual slug of your plugin's admin page
+	$plugin_page = 'toplevel_page_tag_env_page';
 
-    // Check if we're on the plugin's admin page
-    if ($hook !== $plugin_page) {
-        return;
-    }
+	// Check if we're on the plugin's admin page
+	if ( $hook !== $plugin_page ) {
+		return;
+	}
 
-    // Enqueue your CSS file
-    wp_enqueue_style(
-        'my-plugin-admin-style', // Handle for the style
-        plugin_dir_url(__FILE__) . 'assets/css/admin-style.css', // Path to your CSS file
-        array(), // Dependencies, if any
-        '1.0.0', // Version
-        'all' // Media
-    );
+	// Enqueue your CSS file
+	wp_enqueue_style(
+		'my-plugin-admin-style', // Handle for the style
+		plugin_dir_url( __FILE__ ) . 'assets/css/admin-style.css', // Path to your CSS file
+		array(), // Dependencies, if any
+		'1.0.0', // Version
+		'all' // Media
+	);
 }
 
 
@@ -130,36 +148,36 @@ function tag_display_installation_info() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
-    $output_path = esc_html__( 'You need to run `wp-env install-path > ./local/info-to-pass/wp-env-path.txt`', 'tag-plugin' );
+	$output_path = esc_html__( 'You need to run `wp-env install-path > ./local/info-to-pass/wp-env-path.txt`', 'tag-plugin' );
 
-    $file_path = WP_CONTENT_DIR . '/info-passed/wp-env-path.txt';
+	$file_path = WP_CONTENT_DIR . '/info-passed/wp-env-path.txt';
 
-    if ( file_exists( $file_path ) ) {
-        $output_path = trim( file_get_contents( $file_path ) );
-        $log_path = trim( file_get_contents( $file_path ) ) . '/WordPress/wp-content/debug.log'; 
-    }
+	if ( file_exists( $file_path ) ) {
+		$output_path = trim( file_get_contents( $file_path ) );
+		$log_path    = trim( file_get_contents( $file_path ) ) . '/WordPress/wp-content/debug.log';
+	}
 
-    echo '<h2>' . esc_html__( 'WP Env Install Path', 'tag-plugin' ) . '</h2>';
+	echo '<h2>' . esc_html__( 'WP Env Install Path', 'tag-plugin' ) . '</h2>';
 	echo '<p>' . esc_html__( 'Find container path =', 'tag-plugin' ) . ' <code>wp-env install-path</code></p>';
-    if ( isset( $output_path ) ) {
-        echo '<pre>' . esc_html( $output_path ) . '</pre>';
-    }
+	if ( isset( $output_path ) ) {
+		echo '<pre>' . esc_html( $output_path ) . '</pre>';
+	}
 
-    echo sprintf(
-        '<p>%s: <code>%s</code>, %s.</p>',
-        esc_html__( 'This will help you delete the debug log. If you have run', 'tag-plugin' ),
-        esc_html__( 'wp-env install-path > ./local/info-to-pass/wp-env-path.txt', 'tag-plugin' ),
-        esc_html__( 'you should see instructions below', 'tag-plugin' )
-    );
+	printf(
+		'<p>%s: <code>%s</code>, %s.</p>',
+		esc_html__( 'This will help you delete the debug log. If you have run', 'tag-plugin' ),
+		esc_html__( 'wp-env install-path > ./local/info-to-pass/wp-env-path.txt', 'tag-plugin' ),
+		esc_html__( 'you should see instructions below', 'tag-plugin' )
+	);
 	echo '<div class="wrapper">';
 
-    if ( isset( $log_path ) ) {
-        echo '<h2>' . esc_html__( 'To Delete Debug Log', 'tag-plugin' ) . '</h2>';
-        echo '<pre>';
-        echo esc_html( 'rm -rf ' . $log_path );
-        echo '<br>' . esc_html( 'touch ' . $log_path );
-        echo '</pre>';
-    }
+	if ( isset( $log_path ) ) {
+		echo '<h2>' . esc_html__( 'To Delete Debug Log', 'tag-plugin' ) . '</h2>';
+		echo '<pre>';
+		echo esc_html( 'rm -rf ' . $log_path );
+		echo '<br>' . esc_html( 'touch ' . $log_path );
+		echo '</pre>';
+	}
 
 	echo '<h2>' . esc_html__( 'Container Access', 'tag-plugin' ) . '</h2>';
 	echo '<ul>';
